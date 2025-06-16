@@ -1,4 +1,4 @@
-# Llama.cpp 命令行参数列表
+# Llama.cpp 命令行参数列表（仅 llama-mtmd-cli）
 
 ## 1. 基础参数
 ```-h, --help, --usage```
