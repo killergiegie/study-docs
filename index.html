@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>我的笔记</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 📘 浅色主题（可选 vue.css / pure.css） -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+
+    <!-- 🧮 KaTeX 数学公式样式 -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+
+    <!-- 📚 标签页图标 -->
+    <link rel="icon" href="favicon-32x32.png" type="image/x-icon" />
+
+    <!-- 📖 背景样式 -->
+    <style>
+        /* 主页背景色 */
+        body {
+            background-color: #ffffff;
+        }
+
+        /* 侧边栏背景色 */
+        .sidebar {
+            background-color: #ffffff;
+        }
+    </style>
+
+
+    <style>
+        /* 正文区域字体放大 */
+        body {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        /* 侧边栏字体放大 */
+        .sidebar {
+            font-size: 17px;
+        }
+
+        /* 代码块字体放大 */
+        /* 缩小代码块字体和行距 */
+        pre,
+        code {
+            font-size: 15px !important;
+            /* 字体略小（默认约 13-14） */
+            line-height: 1.4 !important;
+            /* 行距稍微收紧 */
+        }
+
+        /* 缩小灰框的内边距 */
+        pre {
+            padding: 0.4em 1em !important;
+            /* 上下0.6em，左右1em */
+            margin: 1em 0 !important;
+            /* 缩小上下间距 */
+            border-radius: 3px;
+            /* 可选：圆角 */
+        }
+
+        /* 控制代码块水平滚动的外边距 */
+        .markdown-section pre {
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* 页面标题更醒目 */
+        h1,
+        h2,
+        h3 {
+            font-weight: bold;
+        }
+
+        /* 可选：让侧边栏目录的缩进更清晰 */
+        .sidebar ul {
+            padding-left: 0.5em;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="app">正在加载文档...</div>
+
+    <script>
+        window.$docsify = {
+            name: '学习笔记',
+            repo: '',                         // GitHub 仓库链接（可留空）
+            loadSidebar: true,               // 加载 _sidebar.md
+            subMaxLevel: 5,                  // 控制侧边栏标题层级
+            markdown: {
+                breaks: true   // ✅ 启用软换行转 <br> 的功能！
+            },
+            search: 'auto',                  // 启用全文搜索
+            zoomImage: true,                 // 图片缩放功能
+            katex: {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "\\(", right: "\\)", display: false }
+                ]
+            },
+            latex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)'], ['\\[', '\\]']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            copyCode: {
+                buttonText: '📋 复制',
+                errorText: '复制失败',
+                successText: '已复制！'
+            },
+            sidebarDisplayLevel: 0, // 初始只显示第一级目录
+            sidebarCollapse: {
+                accordion: false, // 点击一个目录折叠其他目录
+                collapse: true
+            }
+        };
+    </script>
+
+    <!-- Docsify 主脚本 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    
+    <!-- KaTeX 支持 -->
+    <!-- MathJax 或 KaTeX -->
+    <script src="//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+    <!-- 使用 docsify-latex 插件 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-latex@0.1.5"></script>
+    
+    <!-- 搜索插件 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+    
+    <!-- 图片缩放插件 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    
+    <!-- 代码复制插件 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+    
+    <!-- 侧边栏折叠插件 -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+
+    <!-- Prism.js 代码高亮 -->
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-php.min.js"></script>
+
+
+</body>
+
+<style>
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .highlight {
+        background-color: #ffe;
+        padding: 0.5em;
+    }
+</style>
+
+<!-- 图片样式 -->
+<style>
+    img {
+        max-width: 60%;
+        height: auto;
+        display: block;
+        /* margin: 1em auto; */
+        /* 居中显示 */
+    }
+</style>
+  
+
+</html>
