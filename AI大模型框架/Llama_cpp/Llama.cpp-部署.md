@@ -85,34 +85,24 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-cli \
 
 ## 3. 多模态推理（命令行工具 llama-mtmd-cli）
 
-### 3.1 Qwen2.5-VL-7B-Q4_K_M 模型 + GPU 推理
-仅使用 GPU1 进行推理
-```bash
-CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cli \
-  -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
-  --mmproj ./Qwen2.5_mmproj-F16.gguf \
-  -p "回答这题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/3.png \
-  -ngl 99 -fa -sm row \
-  --temp 0.8 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
-  -t 24 \
-  -c 8192 \
-  -n 8192 
+### 3.1 Gemma-3-12b-it 模型
 
-~/LLM/llama.cpp-master/build/bin/llama-mtmd-cli \
-  -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
-  --mmproj ./Qwen2.5_mmproj-F16.gguf \
-  -p "回答这题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/3.png \
-  --temp 0.8 --top-k 40 --top-p 0.95 \
-  -t 24 \
-  -c 8192 \
-  -n 8192 
+#### 3.1.0 Gemma-3-12b-it 量化模型 + CPU 推理
+
+```bash
+/bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
+  -m ./gemma-3-GGUF/google_gemma-3-12b-it-Q4_K_M.gguf \
+  --mmproj ./mmproj-google_gemma-3-12b-it-f16.gguf \
+  -p "回答这道题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/6.png \
+  --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
+  -t 8 \
+  -c 2048 \
+  -n 2048 
 ```
 
-### 3.2 Gemma-3-12b-it 模型
 
-#### 3.2.1 Gemma-3-12b-it-Q4_K_M 模型 + GPU 推理
+#### 3.1.1 Gemma-3-12b-it-Q4_K_M 模型 + GPU 推理
 仅使用 GPU1 进行推理
 ```bash
 CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cli \
@@ -127,7 +117,7 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
   -n 4096 
 ```
 
-#### 3.2.2 Gemma-3-12b-it-Q4_K_M 模型 + CPU 推理
+#### 3.1.2 Gemma-3-12b-it-Q4_K_M 模型 + CPU 推理
 使用8线程进行推理
 
 ```bash
@@ -158,27 +148,9 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
   -n 2048 
 ```
 
-#### 3.2.2 Gemma-3-12b-it-IQ3 模型 + CPU 推理
-
-Q4_K_M  性能：4.46 tokens/s + Mem 14.26 GB
-IQ4_XS  性能：4.10 tokens/s + Mem  8.77 GB
-Q3_K_S  性能：4.38 tokens/s + Mem  7.75 GB
-IQ3_M   性能：2.69 tokens/s + Mem  8.70 GB
-
-```bash
-/bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
-  -m ./gemma-3-GGUF/google_gemma-3-12b-it-Q3_K_XL.gguf \
-  --mmproj ./gemma-3-mmproj-model-f16.gguf \
-  -p "回答这道题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/6.png \
-  --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
-  -t 8 \
-  -c 2048 \
-  -n 2048 
-```
 
 
-#### 3.2.3 Gemma-3-12b-it-bf16 模型 + CPU 推理
+#### 3.1.3 Gemma-3-12b-it-bf16 模型 + CPU 推理
 使用8线程进行推理
 ```bash
 ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
@@ -224,6 +196,30 @@ IQ3_M   性能：2.69 tokens/s + Mem  8.70 GB
   -n 8192 
 ```
 
+### 3.5 Qwen2.5-VL-7B-Q4_K_M 模型 + GPU 推理
+仅使用 GPU1 进行推理
+```bash
+CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cli \
+  -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
+  --mmproj ./Qwen2.5_mmproj-F16.gguf \
+  -p "回答这题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/3.png \
+  -ngl 99 -fa -sm row \
+  --temp 0.8 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
+  -t 24 \
+  -c 8192 \
+  -n 8192 
+
+~/LLM/llama.cpp-master/build/bin/llama-mtmd-cli \
+  -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
+  --mmproj ./Qwen2.5_mmproj-F16.gguf \
+  -p "回答这题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/3.png \
+  --temp 0.8 --top-k 40 --top-p 0.95 \
+  -t 24 \
+  -c 8192 \
+  -n 8192 
+```
 
 ## 4. 运行参数总览表
 | 参数                       | 适用平台 | 类型        | 含义说明                                                                |
