@@ -210,18 +210,58 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
   -c 8192 \
   -n 8192 
 
-~/LLM/llama.cpp-master/build/bin/llama-mtmd-cli \
+/bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
   -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
   --mmproj ./Qwen2.5_mmproj-F16.gguf \
   -p "回答这题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/3.png \
+  --image ./math_test/6.png \
   --temp 0.8 --top-k 40 --top-p 0.95 \
-  -t 24 \
+  -t 8 \
   -c 8192 \
   -n 8192 
 ```
 
-## 4. 运行参数总览表
+
+### 3.6 bagel-ema.gguf 模型 + CPU 推理\
+
+#### 3.6.1 bagel-ema-q3_k_m.gguf
+使用8线程进行推理
+```bash
+/bin/time ~/LLM/llama.cpp-cpu/build-update/bin/llama-mtmd-cli \
+  -m ./bagel/ema-q4_k_m.gguf \
+  --mmproj ./bagel/pig_ae_fp32-f16.gguf \
+  -p "回答这道题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/6.png \
+  --temp 0.6 --top-k 40 --top-p 0.95 \
+  -t 8 \
+  -c 2048 \
+  -n 2048 
+```
+
+
+## 4. HF 模型转换为 GGUF
+
+### 4.1 安装依赖
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4.2 使用脚本进行转换
+
+```bash
+# 转换为 GGUF 格式（FP16）
+python3 convert_hf_to_gguf.py \
+/data/home2/ghy/.cache/modelscope/hub/models/nv-community/Llama-3___1-Nemotron-Nano-VL-8B-V1/  \
+--outfile \
+./nv_llama3/Llama-3_1-Nemotron-Nano-VL-8B-V1.gguf \
+--trust-remote-code
+
+# 量化为 Q4_K
+./quantize ./gemma-2b-f16.gguf ./gemma-2b-Q4_K.gguf Q4_K
+```
+
+## 5. 运行参数总览表
 | 参数                       | 适用平台 | 类型        | 含义说明                                                                |
 | -------------------------- | -------- | ----------- | ----------------------------------------------------------------------- |
 | `-t 24` / `--threads 24`   | CPU      | 通用        | **指定使用的线程数**，通常设为 CPU 核心数，提升并行性能                 |
