@@ -80,6 +80,17 @@
         }
     </style>
 
+    <script>
+        // 如果不是在本地运行，就启用密码检查
+        if (!location.hostname.includes('localhost') && !location.hostname.includes('127.0.0.1')) {
+            var password = prompt("请输入访问密码：");
+            if (password !== "201102") {
+                document.body.innerHTML = "<h1>访问被拒绝</h1>";
+                throw new Error("Unauthorized access");
+            }
+        }
+    </script>
+
 </head>
 
 <body>
