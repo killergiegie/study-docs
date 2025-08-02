@@ -32,7 +32,8 @@
 
 - 高级综合
   - [总览](/高级综合/README.md)
-  - [版本1](/高级综合/note1.md)
+  - AutoSA
+    - [01-构建AutoSA](/高级综合/AutoSA/AutoSA编译与安装.md)
 
 - 计算机体系结构
   - [总览](/计算机体系结构/README.md)
@@ -46,6 +47,7 @@
 
 - Linux常用操作
   - [总览](/Linux常用操作/README.md)
+  - [Linux: Bash脚本常用指令](/Linux常用操作/Linux-bash脚本常用指令.md)
   - [Linux: 编译安装各类开发工具到本地](/Linux常用操作/Linux-编译安装各类开发工具到本地.md)
   - [Linux: 配置USB网卡开启热点](/Linux常用操作/Linux-USB无线网卡配置热点.md)
 

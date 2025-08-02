@@ -19,8 +19,6 @@ https://www.modelscope.cn/models/ggml-org/Qwen2.5-Omni-7B-GGUF/files
 cmake -B build -S . \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLAMA_CURL=OFF \
-    -DGGML_NATIVE=OFF \
-    -DGGML_USE_VNNI=OFF \
     -DGGML_CUDA=OFF
 
 cd build
@@ -90,11 +88,11 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-cli \
 #### 3.1.0 Gemma-3-12b-it 量化模型 + CPU 推理
 
 ```bash
-/bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-mtmd-cli \
   -m ./gemma-3-GGUF/google_gemma-3-12b-it-Q4_K_M.gguf \
-  --mmproj ./mmproj-google_gemma-3-12b-it-f16.gguf \
-  -p "回答这道题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/6.png \
+  --mmproj ./gemma-3-GGUF/mmproj-google_gemma-3-12b-it-f16.gguf \
+  -p "回答22题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/math.jpg \
   --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
   -t 8 \
   -c 2048 \
@@ -213,12 +211,12 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
 /bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
   -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
   --mmproj ./Qwen2.5_mmproj-F16.gguf \
-  -p "回答这题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/6.png \
-  --temp 0.8 --top-k 40 --top-p 0.95 \
+  -p "回答二十二题。" \
+  --image ./math_test/math.jpg \
+  --temp 0.8 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
   -t 8 \
-  -c 8192 \
-  -n 8192 
+  -c 4096 \
+  -n 4096 
 ```
 
 
@@ -238,56 +236,106 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
   -n 2048 
 ```
 
+### 3.7 nvidia_OpenReasoning-Nemotron-7B 模型
 
-## 4. HF 模型转换为 GGUF
-
-### 4.1 安装依赖
-
+使用8线程进行推理
 ```bash
-pip install -r requirements.txt
+/bin/time ~/LLM/llama.cpp-cpu/build-update/bin/llama-cli \
+  -m ./nemotron/nvidia_OpenReasoning-Nemotron-7B-Q4_K_M.gguf \
+  --temp 0.8 --top-k 40 --top-p 0.95 \
+  -t 8 \
+  -c 4096 \
+  -n 4096 
+```
+$ \text{已知 } \sin^2 \theta + \sin \theta = 1，\text{ 求 } \cos^2 \theta + \cos^6 \theta \text{ 之值。} $
+
+### 3.8 gemma-3-R1984 模型
+
+使用8线程进行推理
+```bash
+/bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
+  -m ./gemma-3-GGUF/google_gemma-3-12b-it-Q4_K_M.gguf \
+  --mmproj ./mmproj-google_gemma-3-12b-it-f16.gguf \
+  -p "回答这道题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/6.png \
+  --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
+  -t 8 \
+  -c 2048 \
+  -n 2048 
 ```
 
-### 4.2 使用脚本进行转换
-
+### 3.9 erax 模型
+使用8线程进行推理
 ```bash
-# 转换为 GGUF 格式（FP16）
-python3 convert_hf_to_gguf.py \
-/data/home2/ghy/.cache/modelscope/hub/models/nv-community/Llama-3___1-Nemotron-Nano-VL-8B-V1/  \
---outfile \
-./nv_llama3/Llama-3_1-Nemotron-Nano-VL-8B-V1.gguf \
---trust-remote-code
-
-# 量化为 Q4_K
-./quantize ./gemma-2b-f16.gguf ./gemma-2b-Q4_K.gguf Q4_K
+/bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
+  -m ./erax/EraX-VL-2B-V1.5.Q4_K_M.gguf \
+  --mmproj ./erax/EraX-VL-2B-V1.5.mmproj-fp16.gguf \
+  -p "使用中文汉字复述题目，数学公式使用latex格式输出，不要其他任何内容。" \
+  --image ./math_test/6.png \
+  --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
+  -t 8 \
+  -c 2048 \
+  -n 2048 
 ```
 
-## 5. 运行参数总览表
-| 参数                       | 适用平台 | 类型        | 含义说明                                                                |
-| -------------------------- | -------- | ----------- | ----------------------------------------------------------------------- |
-| `-t 24` / `--threads 24`   | CPU      | 通用        | **指定使用的线程数**，通常设为 CPU 核心数，提升并行性能                 |
-| `--mlock`                  | CPU      | 通用        | **锁定模型到内存**，避免 swap，提升稳定性（需 root 权限或系统支持）     |
-| `--numa`                   | CPU      | 通用        | 启用 **NUMA-aware 线程绑定**，适用于多 CPU NUMA 架构                    |
-| `--no-mmap`                | CPU      | 通用        | 禁用 `mmap`，使用传统读取模型方式，某些系统可能更快                     |
-| `--no-prompt-cache`        | CPU      | 通用        | 禁用 prompt 缓存，可减少内存使用，但会重复计算 prompt                   |
-| `-c 2048`                  | CPU/GPU  | 通用        | 设置 **上下文长度**（token 数），受模型限制，建议不要超过 GGUF 中定义值 |
-| `-n 1024`                  | CPU/GPU  | 通用        | 生成 **最大 token 数量**                                                |
-| `--temp 0.8`               | CPU/GPU  | 通用        | **采样温度**（越高越随机，0.7\~1.0 通常较自然）                         |
-| `--top-k 40`               | CPU/GPU  | 通用        | 每步生成时在 **概率前 k 个 token 中采样**                               |
-| `--top-p 0.95`             | CPU/GPU  | 通用        | **Top-p 采样（nucleus sampling）**，在累计概率前 95% 范围中采样         |
-| `--presence-penalty 1.2`   | CPU/GPU  | 通用        | 对 **重复 token 添加惩罚**，提高多样性                                  |
-| `-m model.gguf`            | CPU/GPU  | 通用        | 指定加载的 **GGUF 模型文件**                                            |
-| `--jinja`                  | CPU/GPU  | 通用        | 使用模型内置的 **对话模板**（适合 Chat 类模型）                         |
-| `--color`                  | CPU/GPU  | 通用        | 启用终端 **彩色输出**，增强可读性                                       |
-| `--mmproj mmproj.gguf`     | CPU/GPU  | 多模态      | 加载 **多模态投影模型**（如图文匹配的映射网络），仅适用于多模态模型     |
-| `--image image.png`        | CPU/GPU  | 多模态      | 指定输入图像（支持 PNG、JPEG 等），用于 **图文联合推理**                |
-| `-p "<prompt>"`            | CPU/GPU  | 文本/多模态 | 提示词（prompt），如果配合 `--image`，则为图文联合输入                  |
+
+### 3.10 llama-tts
+
+```bash
+/bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-tts \
+  -m ./outetts/OuteTTS-1.0-0.6B-FP16.gguf \
+  -mv ./outetts/WavTokenizer-Large-75-F16.gguf \
+  -p "I have an apple" \
+  -t 16 \
+  --tts-use-guide-tokens \
+  --temp 0.4 --repeat-last-n 64 --repeat-penalty 1.1 \
+  --top-k 40 --top-p 0.9 --min-p 0.05 \
+  -o output_audio.wav
+
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-tts \
+  -m ./outetts/OuteTTS-0.2-500M-FP16.gguf \
+  -mv ./outetts/mywavtokenizer.gguf \
+  -p "hello hello hello hello hello hello" \
+  -t 16 \
+  --tts-use-guide-tokens \
+  --temp 0.4 --repeat-last-n 64 --repeat-penalty 1.1 \
+  --top-k 40 --top-p 0.9 --min-p 0.05 \
+  -o output_audio.wav
+
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-tts \
+  -m ./outetts/OuteTTS-1.0-0.6B-FP16.gguf \
+  -mv ./outetts/mywavtokenizer.gguf \
+  -p "I have an apple" \
+  -t 16 \
+  --temp 0.4 --repeat-last-n 64 --repeat-penalty 1.1 \
+  --top-k 40 --top-p 0.9  \
+  -o output_audio.wav
+
+```
+
+### 3.11 ChatTTS
+
+性能方面：
+CPU 内存占用：602MB
+TPU 内存占用：303MB(常驻) 371MB(合成时)
+TPU Util最高：30% - 52%
+Real-Time Factor(RTF):  2.26 （合成1s音频需要2.26s）
+
+### 3.12 Qwen2.5-omni
+
+```bash
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-mtmd-cli \
+ -m ./qwen-omni/Qwen2.5-Omni-3B-Q4_K_M.gguf \
+ --mmproj ./qwen-omni/mmproj-Qwen2.5-Omni-3B-f16.gguf \
+ -p "用户提问：请回答第25题。请你识别这些的图像和问题，并输出一段详细描述，描述中应包含图像中所有对理解问题有帮助的文字、公式、结构、图形特征等内容。不需要你进行推理，仅转换为可供大语言模型理解的提问文本即可。" \
+ --image ./math_test/math.png \
+ --temp 0.8 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
+ -t 8 \
+ -c 1024 \
+ -n 1024 
 
 
-GPU专用（需 -DGGML_CUDA=ON 构建）
 
-| 参数         | 适用平台 | 含义说明                                                       |
-| ------------ | -------- | -------------------------------------------------------------- |
-| `-ngl 99`    | GPU      | 将 99 个 transformer 层卸载到 GPU（**最大化加速**）            |
-| `-dev cuda1` | GPU      | 指定使用哪张 GPU（如 `cuda0`、`cuda1`）                        |
-| `-fa`        | GPU      | 启用 **Flash Attention**，适合大模型和长上下文（CUDA >= 11.7） |
-| `-sm row`    | GPU      | 多 GPU 分片方式（`row` = 按层切分，`auto` 自动）               |
+```
+
+500MB(CPU)+2236MB(TPU)
