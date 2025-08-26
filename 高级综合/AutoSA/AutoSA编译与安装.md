@@ -5,6 +5,14 @@
 export ACLOCAL_PATH=$HOME/local/libtool/share/aclocal:$ACLOCAL_PATH
 ```
 
+## 0. 编译安装 libtool
+
+## 0. 编译安装 GMP
+
+## 0. 编译安装 libyaml
+
+## 0. 编译安装 LLVM-10 （推荐）
+
 ## 0. 编译安装 GF2X
 
 ```bash

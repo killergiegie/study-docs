@@ -89,7 +89,7 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-cli \
 
 ```bash
 /bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-mtmd-cli \
-  -m ./gemma-3-GGUF/google_gemma-3-12b-it-Q4_K_M.gguf \
+  -m ./gemma-3-GGUF/google_gemma-3-12b-it-Q3_K_L.gguf \
   --mmproj ./gemma-3-GGUF/mmproj-google_gemma-3-12b-it-f16.gguf \
   -p "回答22题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
   --image ./math_test/math.jpg \
@@ -122,8 +122,8 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
 /bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
   -m ./gemma-3-12b-it-Q4_K_M.gguf \
   --mmproj ./gemma-3-mmproj-model-f16.gguf \
-  -p "回答这道题，首先复述出题目，请详细推理并输出尽量多内容，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/6.png \
+  -p "回答二十二题，首先复述出题目，请详细推理并输出尽量多内容，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/math.jpg \
   --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
   -t 8 \
   -c 2048 \
@@ -132,8 +132,8 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
 /bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
   -m ./gemma-3-12b-it-Q4_K_M.gguf \
   --mmproj ./gemma-3-mmproj-model-f16.gguf \
-  -p "回答这道题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/6.png \
+  -p "回答二十二题，首先复述出题目，部分题目可能不止一个解，有需要分类讨论的可能；遇到数学题时请逐步推理；所有数学表达式必须使用LaTeX语法，必须采用 \(\) 或 \[\] 包裹起来；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/math.jpg \
   --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
   -t 8 \
   --parallel 1 \
@@ -200,8 +200,8 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
 CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cli \
   -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
   --mmproj ./Qwen2.5_mmproj-F16.gguf \
-  -p "回答这题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
-  --image ./math_test/3.png \
+  -p "回答22题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+  --image ./math_test/math.jpg \
   -ngl 99 -fa -sm row \
   --temp 0.8 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
   -t 24 \
@@ -211,7 +211,7 @@ CUDA_VISIBLE_DEVICES=1 nice -n 10 ~/LLM/llama.cpp-master/build/bin/llama-mtmd-cl
 /bin/time ~/LLM/llama.cpp-cpu/build/bin/llama-mtmd-cli \
   -m ./Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf \
   --mmproj ./Qwen2.5_mmproj-F16.gguf \
-  -p "回答二十二题。" \
+  -p "回答二十二题。首先复述出题目，请详细推理并输出尽量多内容；遇到数学题时请逐步推理；所有数学表达式必须使用标准 LaTeX 语法，采用 \( \) 或 \[ \] 包裹；输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
   --image ./math_test/math.jpg \
   --temp 0.8 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
   -t 8 \
@@ -327,15 +327,103 @@ Real-Time Factor(RTF):  2.26 （合成1s音频需要2.26s）
 /bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-mtmd-cli \
  -m ./qwen-omni/Qwen2.5-Omni-3B-Q4_K_M.gguf \
  --mmproj ./qwen-omni/mmproj-Qwen2.5-Omni-3B-f16.gguf \
- -p "用户提问：请回答第25题。请你识别这些的图像和问题，并输出一段详细描述，描述中应包含图像中所有对理解问题有帮助的文字、公式、结构、图形特征等内容。不需要你进行推理，仅转换为可供大语言模型理解的提问文本即可。" \
- --image ./math_test/math.png \
+ -p "请你使用文本描述清楚这张图片的所有内容，无需进一步解答。" \
+ --image ./math_test/gk-03.png \
  --temp 0.8 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
  -t 8 \
  -c 1024 \
  -n 1024 
+```
 
+高考-01
+若z=(m^2+m-6)+(m-2)i为纯虚数,则实数m的值为()
+
+高考-02
+x+y-1>=0,x-y+3>=0,x<=2;z=x+2y+1的最大值为?
+
+高考-03
+设函数$f(x)=xe^x+a(1-e^x)+1.$
+(1) 求函数$f(x)$ 的单调区间；
+(2)若函数$f(x)$ 在$(0,+\infty)$零点，证明：$a>2.$
+
+
+
+
+高中题5
+函数 \( y = \lg (a^{2x} - (ab)^{x} - 2b^{2x} + 1) \)，\( a > 0, b > 0 \)，在 \( x \) 取何值时，\( y > 0 \) ?。
+
+高中题6
+已知：sin²θ + sin θ = 1，求cos²θ + cos⁶θ的值。
+
+
+### 3.13 Gemma-3n
+
+#### Gemma-3n-E4B-Q4_K_M
+
+```bash
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-cli \
+ -m ./gemma-3n-GGUF/google_gemma-3n-E4B-it-Q4_K_M.gguf \
+ -p "回答：已知：sin²θ + sin θ = 1，求cos²θ + cos⁶θ的值。要求：首先复述出题目，请详细推理并输出尽量多内容；所有数学表达式必须使用标准 LaTeX 语法。输出内容采用三段式结构，依次为：“解题步骤”、“结论”与“知识点总结”，每段以固定标题开头，便于分段解析和结构化展示" \
+ --temp 1.0 --top-k 64 --top-p 0.95 \
+ -t 8 \
+ -c 2048 \
+ -n 2048 
+```
+
+#### Gemma-3n-E2B-Q8_0
+
+```bash
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-cli \
+ -m ./gemma-3n-GGUF/google_gemma-3n-E2B-it-Q8_0.gguf \
+ -p "回答：现在有一片神奇的草地，里面的草每天都在匀速生长。如果放8头牛可以6天把草吃完，如果放6头牛可以10天吃完，那么，如果放四头牛的话，可以几天吃完呢？如果是3头牛，又会是几天能吃完呢？" \
+ --temp 1.0 --top-k 64 --top-p 0.95 \
+ -t 8 \
+ -c 2048 \
+ -n 2048 
+
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-cli \
+  -m ./gemma-3-GGUF/google_gemma-3-12b-it-Q3_K_L.gguf \
+  -p "回答：已知 $f(x) = (\frac{x - 1}{x + 1})^2 (x \geq 1)$，$f^{-1}(x)$ 为 f(x) 的反函数，又 $g(x) = \frac{1}{f^{-1}(x)} + \sqrt{x} + 2$。求 $f^{-1}(x)$ 的定义域、单调区间和 g(x) 的最小值。要求：首先复述出题目，请详细推理并输出尽量多内容，注意可能会需要你分类讨论；所有数学表达式必须使用标准 LaTeX 语法。输出内容采用两段式结构，依次为：“解题步骤”与“结论”，每段以固定标题开头" \
+  --temp 1.0 --top-k 40 --top-p 0.95 --presence-penalty 1.2 \
+  -t 8 \
+  -c 2048 \
+  -n 2048 
 
 
 ```
 
+#### Gemma-3n 模型效果测试
+
+|  题目  |  E4B-Q4K-M  |  E2B-Q8-0  |  qwen 识图 |
+|:------:|:-----------:|:----------:| :----: |
+|    1    |    正确     |    错误    |  准确  |
+|    2    |   证明题    |   证明题   |  准确  |
+|    3    |    错误     |    错误    |  准确  |
+|    4    |    错误     |    错误    |  准确  |
+|    5    |    错误     |    错误    | 小错误 |
+|    6    |    正确     |    正确    |  准确  |
+|    7    |  答对一半   |    错误    |  准确  |
+|    8    |  答对一半   |    错误    |  准确  |
+|    9    |    错误     |    错误    |  准确  |
+|   10    |    错误     |    错误    |  准确  |
+
+
 500MB(CPU)+2236MB(TPU)
+
+TTS+STT 3709 MB
+
+
+$x \in (a, a + \frac{1}{a}) \cup (2a, \infty)$.  即 $a < x < a + \frac{1}{a}$ 或 $x > 2a$.
+
+### 3.14 Qwen3
+```bash
+
+/bin/time ~/LLM/llama.cpp-cpu-new/build/bin/llama-cli \
+ -m ./qwen3/Qwen3-4B-Q4_K_M.gguf \
+ -p "回答：现在有一片神奇的草地，里面的草每天都在匀速生长。如果放8头牛可以6天把草吃完，如果放6头牛可以10天吃完，那么，如果放四头牛的话，可以几天吃完呢？如果是3头牛，又会是几天能吃完呢？/no_think" \
+ --temp 1.0 --top-k 64 --top-p 0.95 \
+ -t 8 \
+ -c 2048 \
+ -n 2048 
+ 
+ ```
