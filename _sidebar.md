@@ -2,13 +2,17 @@
 
 - LLVM编译器
   - [总览](/LLVM编译器/README.md)
+  - 编译优化算法
+    - [LLVM Pass 目录](/LLVM编译器/编译优化算法/README.md)
+    - [01-InstCombine源码分析](/LLVM编译器/编译优化算法/01-InstCombine源码分析.md)
   - LLVM部署与使用
     - [01-安装LLVM编译器](/LLVM编译器/LLVM部署与使用/01_install_LLVM.md)
     - [02-使用方法](/LLVM编译器/LLVM部署与使用/02_usage_llvm.md)
     - [03-自定义IR优化PASS](/LLVM编译器/LLVM部署与使用/03_创建自己的pass.md)
     - [04-LLVM后端流程](/LLVM编译器/LLVM部署与使用/04_SelectionDAG节点.md)
   - 离散数学与图论
-    - [图论-01](/LLVM编译器/离散数学与图论/图论-01.md)
+    - [总览](/LLVM编译器/离散数学与图论/README.md)
+    - [图论01-最短路算法](/LLVM编译器/离散数学与图论/图论01-最短路算法.md)
 
 - 高级综合
   - [总览](/高级综合/README.md)
